@@ -1,0 +1,30 @@
+CREATE DATABASE Bookings;
+USE Bookings;
+
+CREATE TABLE usuario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL -- Recuerda encriptar al guardar
+);
+
+CREATE TABLE evento (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
+    fecha DATE NOT NULL,
+    ubicacion VARCHAR(150) NOT NULL,
+    entradas_totales INT NOT NULL CHECK (entradas_totales > 0),
+    entradas_disponibles INT NOT NULL CHECK (entradas_disponibles >= 0),
+    foto VARCHAR(255)
+);
+
+CREATE TABLE reserva (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_evento INT NOT NULL,
+    cantidad INT NOT NULL CHECK (cantidad > 0),
+    fecha_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_evento) REFERENCES evento(id) ON DELETE CASCADE
+);
